@@ -47,10 +47,10 @@ public class QuizFrame extends JFrame {
             setLayout(new BorderLayout(10,10));
             buildUI();
             loadQuestion(0);
-            startTimer();
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setLocationRelativeTo(null);
             setVisible(true);
+            startTimer();
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null,
@@ -170,8 +170,11 @@ public class QuizFrame extends JFrame {
 
     private void startTimer() {
         timeLeft = 30;
-        timer = new Timer(1000, e -> {
+        timer = new Timer(1000, null);
+        timer.setInitialDelay(0);
+        timer.addActionListener(e -> {
             timeLeft--;
+            System.out.println("Timer tick: " + timeLeft);
             timerLabel.setText(timeLeft+"s");
             timerBar.setValue(timeLeft);
             if(timeLeft<=10) {
@@ -193,7 +196,7 @@ public class QuizFrame extends JFrame {
         timeLeft=30; timerLabel.setText("30s");
         timerBar.setValue(30); timerBar.setForeground(UIHelper.SUCCESS);
         timerLabel.setForeground(Color.WHITE);
-        timer.start();
+        if(timer != null) timer.start();
     }
 
     private void confirmSubmit() {
